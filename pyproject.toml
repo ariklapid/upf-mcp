@@ -36,13 +36,19 @@ classifiers = [
   "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
   "Typing :: Typed",
 ]
-dependencies = []
+dependencies = [
+  "mcp>=1.27,<2",
+  "pydantic>=2.8,<3",
+]
 
 [project.urls]
 Homepage = "https://github.com/ariklapid/upf-mcp"
 Repository = "https://github.com/ariklapid/upf-mcp"
 Issues = "https://github.com/ariklapid/upf-mcp/issues"
 Documentation = "https://github.com/ariklapid/upf-mcp#readme"
+
+[project.scripts]
+upf-mcp = "upf_mcp.__main__:main"
 
 [tool.hatch.build.targets.wheel]
 packages = ["src/upf_mcp"]
