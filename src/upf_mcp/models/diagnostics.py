@@ -2,12 +2,12 @@
 
 from __future__ import annotations
 
-from enum import Enum
+from enum import StrEnum
 
 from pydantic import BaseModel, ConfigDict, Field
 
 
-class DiagnosticSeverity(str, Enum):
+class DiagnosticSeverity(StrEnum):
     """Severity levels for user-facing parser and validation diagnostics."""
 
     INFO = "info"
@@ -23,7 +23,11 @@ class SourceLocation(BaseModel):
     path: str = Field(description="Project-relative or display path for the source file.")
     line: int = Field(description="One-based starting line.", ge=1)
     column: int = Field(description="One-based starting column.", ge=1)
-    end_line: int | None = Field(default=None, description="One-based ending line when known.", ge=1)
+    end_line: int | None = Field(
+        default=None,
+        description="One-based ending line when known.",
+        ge=1,
+    )
     end_column: int | None = Field(
         default=None,
         description="One-based ending column when known.",
