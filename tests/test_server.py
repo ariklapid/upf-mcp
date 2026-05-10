@@ -24,7 +24,7 @@ def test_tools_list_exposes_ping_schema_and_annotations() -> None:
     async def run() -> dict[str, Any]:
         tools = await server.list_tools()
         tool_map = {tool.name: tool for tool in tools}
-        assert set(tool_map) == {PUBLIC_TOOL_NAMES["ping"]}
+        assert set(tool_map) == {PUBLIC_TOOL_NAMES["ping"], PUBLIC_TOOL_NAMES["parse_upf"]}
         return cast(dict[str, Any], tool_map[PUBLIC_TOOL_NAMES["ping"]].model_dump())
 
     tool = asyncio.run(run())

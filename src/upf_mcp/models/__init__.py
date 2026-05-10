@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from .diagnostics import Diagnostic, DiagnosticSeverity, SourceLocation
 from .upf import (
+    ParseUPFFileResult,
     PowerDomain,
     SetScope,
     UnsupportedCommand,
@@ -15,6 +16,7 @@ __all__ = [
     "Diagnostic",
     "DiagnosticSeverity",
     "PowerDomain",
+    "ParseUPFFileResult",
     "SetScope",
     "SourceLocation",
     "UPFCommand",

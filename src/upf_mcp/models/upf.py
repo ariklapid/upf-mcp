@@ -90,3 +90,32 @@ class UPFDocument(BaseModel):
         default_factory=list,
         description="Parser and collection diagnostics.",
     )
+
+
+class ParseUPFFileResult(BaseModel):
+    """Result returned by the `upf_parse_upf` MCP tool."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    status: Literal["ok", "error"] = Field(description="Tool execution status.")
+    project_root: str = Field(description="Resolved project root.")
+    path: str = Field(description="Project-relative UPF file path.")
+    document: UPFDocument | None = Field(
+        default=None,
+        description="Parsed UPF document when file loading and parsing succeeded.",
+    )
+    command_count: int = Field(default=0, description="Number of parsed commands.", ge=0)
+    power_domain_count: int = Field(default=0, description="Number of parsed domains.", ge=0)
+    unsupported_command_count: int = Field(
+        default=0,
+        description="Number of parsed commands outside the supported subset.",
+        ge=0,
+    )
+    diagnostics: list[Diagnostic] = Field(
+        default_factory=list,
+        description="Bounded diagnostics for the tool result.",
+    )
+    diagnostics_truncated: bool = Field(
+        default=False,
+        description="Whether diagnostics were truncated by the requested limit.",
+    )
