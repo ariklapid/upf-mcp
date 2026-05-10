@@ -8,14 +8,33 @@ The intended product shape is a standalone MCP project under the `ariklapid`
 user, similar in posture to `pyslang-mcp`. Do not assume this repo should be
 absorbed into the broader `asicdesign.ai` portal, workflows, or quizzes repos.
 
+## Current Repository State
+
+- GitHub repository: `git@github-ariklapid:ariklapid/upf-mcp.git`
+- Default branch: `main`
+- License: Apache-2.0
+- Current state: foundation/documentation only. There is no runnable MCP server
+  or Python package yet.
+- Existing context files:
+  - `README.md`
+  - `AGENTS.md`
+  - `PLAN.md`
+  - `docs/glossary.md`
+  - `upf-mcp.md`
+  - `UPF_MCP_Research_and Dataset_Discovery.md`
+  - `search-for-open-source-upf-parsers.md`
+
 ## Startup Context
 
 Before making changes in this repo, read these files:
 
 1. `AGENTS.md`
-2. `upf-mcp.md`
-3. `UPF_MCP_Research_and Dataset_Discovery.md`
-4. `PLAN.md`, when present
+2. `README.md`
+3. `PLAN.md`
+4. `docs/glossary.md`
+5. `upf-mcp.md`
+6. `UPF_MCP_Research_and Dataset_Discovery.md`
+7. `search-for-open-source-upf-parsers.md`
 
 If a future `README.md`, `docs/`, or source tree is added, read the nearest
 local guidance before editing that area.
@@ -171,6 +190,47 @@ As the implementation grows, keep tests close to the behavior:
   - `docs/`
   - `scripts/`
   - `datasets/fixtures/`
+
+## Check-In Policy
+
+The repo is still in foundation mode, so direct pushes to `main` are acceptable
+for explicit owner-requested bootstrap/docs/admin changes. Move quickly, but keep
+history intentional.
+
+From the first Python package skeleton onward, use pull requests for:
+
+- Parser, IR, rule-engine, generator, MCP server, or adapter code.
+- Dependency and packaging changes.
+- Test fixtures and synthetic-data generators.
+- CI, release, security, or branch-protection changes.
+- Any change that affects public behavior or supported UPF semantics.
+
+Target branch protection once CI exists:
+
+- Require PRs into `main`.
+- Require lint, type check, unit tests, parser golden tests, and MCP smoke tests.
+- Require passing checks before merge.
+- Keep direct pushes reserved for emergency/admin-only changes.
+
+## Immediate Next Work
+
+The next engineer/agent should move from planning to a minimal runnable
+foundation:
+
+1. Add `docs/scope.md` with the first supported UPF command subset and
+   explicitly unsupported constructs.
+2. Add `docs/decisions/0001-deterministic-rule-engine.md`.
+3. Create the Python project skeleton: `pyproject.toml`, `src/upf_mcp/`,
+   `tests/`, `examples/`, and `datasets/fixtures/`.
+4. Add `upf_ping` through FastMCP and a CLI entry point.
+5. Spike `tclint` as the Tcl syntax layer and decide whether to depend on it or
+   vendor/build a smaller Tcl command tokenizer.
+6. Define Pydantic models for UPF IR, diagnostics, RTL graph, and power graph.
+7. Implement the first parser path for `set_scope` and `create_power_domain`.
+8. Add the first synthetic two-domain RTL + UPF fixture.
+9. Integrate enough `pyslang` to list hierarchy and top-level instance paths.
+10. Implement the first validation path: parse existing UPF, summarize main
+    domains/blocks, and report unsupported commands with source locations.
 
 ## Product Posture
 

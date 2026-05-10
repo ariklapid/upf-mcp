@@ -64,30 +64,56 @@ The MCP is industry-grade when it can:
 These are defaults, not immutable decisions. Revisit only if implementation
 evidence shows the stack cannot support the target workflow.
 
+## Current Repository State
+
+As of the current repo state:
+
+- GitHub repository: `git@github-ariklapid:ariklapid/upf-mcp.git`
+- Default branch: `main`
+- License: Apache-2.0
+- The repository contains foundation docs only:
+  - `README.md`
+  - `AGENTS.md`
+  - `PLAN.md`
+  - `docs/glossary.md`
+  - `upf-mcp.md`
+  - `UPF_MCP_Research_and Dataset_Discovery.md`
+  - `search-for-open-source-upf-parsers.md`
+- There is no runnable MCP server, Python package, parser implementation, test
+  suite, or example fixture yet.
+- The next milestone is a minimal runnable foundation that can expose
+  `upf_ping`, parse a tiny supported UPF subset, and return structured
+  diagnostics.
+
 ## Phase 0: Product and Scope Foundation (0-5%)
 
 Goal: turn the idea into a crisp engineering target.
 
 Deliverables:
 
-- `AGENTS.md` with local development guidance.
-- `PLAN.md` with staged roadmap.
-- `README.md` with project mission, quick start placeholder, and legal warning.
-- `docs/glossary.md` defining UPF, power domain, voltage domain, supply set,
+- Done: `AGENTS.md` with local development guidance.
+- Done: `PLAN.md` with staged roadmap.
+- Done: `README.md` with project mission, quick start placeholder, and legal
+  warning.
+- Done: `docs/glossary.md` defining UPF, power domain, voltage domain, supply set,
   isolation, level shifter, retention, always-on, PST, power switch, and
   crossing.
-- `docs/scope.md` listing supported, planned, and explicitly unsupported UPF
+- Next: `docs/scope.md` listing supported, planned, and explicitly unsupported UPF
   constructs.
-- Initial ADR: "Deterministic rule engine plus LLM interface."
+- Next: initial ADR, "Deterministic rule engine plus LLM interface."
 
-Decisions to make:
+Confirmed scope decisions:
 
 - Target UPF baseline: 2.1 and 3.0 first. Defer full 4.0 coverage until the
   core parser, rule engine, and generator are stable.
-- First target users: RTL designers, low-power verification engineers, CAD/EDA
-  methodology owners, or AI coding agents.
-- First target flow: open-source only, Synopsys-like, Cadence-like,
-  Siemens-like, or adapter-neutral.
+- First target user/workflow: an engineer using an AI agent to debug UPF and
+  understand power intent.
+- First demo: lint an existing UPF and infer main design blocks and power
+  crossings from it.
+- Second demo: generate UPF from RTL using explicit engineer-confirmed strategy
+  input.
+- First flow strategy: open-source reproducible core with commercial-flow
+  adapter boundaries from day one.
 
 Exit criteria:
 
@@ -108,12 +134,20 @@ Deliverables:
 - MCP server entry point, initially exposing `upf_ping` and metadata.
 - Logging configured to stderr for stdio safety.
 - CI workflow for lint, type check, and tests.
+- Initial PR/branch workflow:
+  - Foundation docs/admin changes may still be direct-pushed when explicitly
+    owner-requested.
+  - Code, parser/rule behavior, dependencies, fixtures, and CI changes should
+    go through PRs.
+  - Once CI exists, enable branch protection on `main` requiring PRs and passing
+    checks.
 
 Exit criteria:
 
 - A fresh clone can install dependencies and run tests.
 - MCP inspector can connect to the server.
 - Tool schemas are validated by tests.
+- `main` has basic branch protection with required CI checks.
 
 ## Phase 2: Core Data Models (10-18%)
 
@@ -551,21 +585,46 @@ datasets/fixtures/
 
 ## Near-Term Implementation Backlog
 
-1. Create `README.md` and `docs/glossary.md`.
-2. Create Python package skeleton and CI.
-3. Define Pydantic models for RTL graph, UPF IR, and diagnostics.
-4. Implement `upf_ping`.
-5. Implement a minimal parser for `create_power_domain` and `set_scope`.
-6. Implement `upf_parse_upf` with source-location diagnostics.
-7. Build first synthetic two-domain RTL + UPF fixture.
-8. Integrate `pyslang` enough to list hierarchy and connections.
-9. Implement domain assignment and crossing detection.
-10. Implement missing-isolation rule.
-11. Expose `upf_validate_intent`.
-12. Add the first-demo path: lint existing UPF, summarize main design blocks,
+Completed foundation:
+
+- `README.md`
+- `AGENTS.md`
+- `PLAN.md`
+- `docs/glossary.md`
+- Apache-2.0 `LICENSE`
+- GitHub `main` branch pushed to `ariklapid/upf-mcp`
+
+Immediate next steps:
+
+1. Add `docs/scope.md` with the first supported UPF command subset:
+   `set_scope`, `create_power_domain`, `create_supply_port`,
+   `create_supply_net`, `connect_supply_net`, `create_supply_set`,
+   `associate_supply_set`, `add_power_state`, `set_isolation`,
+   `set_isolation_control`, `set_level_shifter`, `set_retention`, and
+   `set_retention_control`.
+2. Add `docs/decisions/0001-deterministic-rule-engine.md`.
+3. Create Python package skeleton and CI:
+   `pyproject.toml`, `src/upf_mcp/`, `tests/`, `examples/`,
+   `datasets/fixtures/`, and a minimal GitHub Actions workflow.
+4. Add a lightweight PR workflow and branch-protection plan. After CI lands,
+   require PRs and passing checks for `main`.
+5. Implement `upf_ping` through FastMCP and a local CLI entry point.
+6. Spike `tclint` as the Tcl syntax layer. Decide whether to depend on it,
+   wrap it, or implement a smaller project-owned Tcl command tokenizer.
+7. Define Pydantic models for UPF IR, diagnostics, RTL graph, and power graph.
+8. Implement parser collection for `set_scope` and `create_power_domain`.
+9. Implement `upf_parse_upf` with source-location diagnostics and explicit
+   unsupported-command reporting.
+10. Build the first synthetic two-domain RTL + UPF fixture.
+11. Integrate `pyslang` enough to list hierarchy and top-level instance paths.
+12. Implement domain assignment and crossing detection for the fixture.
+13. Implement the first rule: missing isolation from switchable/off domain to
+    active/always-on domain.
+14. Expose `upf_validate_intent`.
+15. Add the first-demo path: lint existing UPF, summarize main design blocks,
     list power crossings, and explain top diagnostics.
-13. Implement UPF writer golden tests.
-14. Create five stable MCP evaluation questions.
+16. Implement UPF writer golden tests only after the parse/lint flow is stable.
+17. Create five stable MCP evaluation questions for the first demo.
 
 ## Confirmed Decisions
 
