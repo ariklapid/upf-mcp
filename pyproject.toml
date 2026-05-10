@@ -1,0 +1,48 @@
+[build-system]
+requires = ["hatchling>=1.27.0"]
+build-backend = "hatchling.build"
+
+[project]
+name = "upf-mcp"
+version = "0.1.0a0"
+description = "Deterministic MCP server for Unified Power Format power-intent engineering."
+readme = "README.md"
+license = "Apache-2.0"
+license-files = ["LICENSE"]
+authors = [
+  { name = "Ariel Lapid" },
+]
+maintainers = [
+  { name = "Ariel Lapid" },
+]
+requires-python = ">=3.11"
+keywords = [
+  "eda",
+  "ieee-1801",
+  "mcp",
+  "model-context-protocol",
+  "power-intent",
+  "upf",
+]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Environment :: Console",
+  "Intended Audience :: Developers",
+  "License :: OSI Approved :: Apache Software License",
+  "Operating System :: POSIX :: Linux",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering :: Electronic Design Automation (EDA)",
+  "Typing :: Typed",
+]
+dependencies = []
+
+[project.urls]
+Homepage = "https://github.com/ariklapid/upf-mcp"
+Repository = "https://github.com/ariklapid/upf-mcp"
+Issues = "https://github.com/ariklapid/upf-mcp/issues"
+Documentation = "https://github.com/ariklapid/upf-mcp#readme"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/upf_mcp"]
