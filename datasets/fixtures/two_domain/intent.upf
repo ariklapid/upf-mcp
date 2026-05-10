@@ -1,0 +1,4 @@
+# Synthetic two-domain UPF seed for early parser and lint development.
+set_scope /top
+create_power_domain PD_TOP -include_scope
+create_power_domain PD_SW -elements {u_core}

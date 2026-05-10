@@ -1,0 +1,5 @@
+# Synthetic UPF fixture with unsupported MVP constructs.
+set_scope /top
+create_power_domain PD_SW -elements {u_core}
+create_supply_net VDD -domain PD_SW
+create_power_domain PD_DBG -elements {u_debug} -unknown_option value
